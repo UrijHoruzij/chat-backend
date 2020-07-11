@@ -59,7 +59,7 @@ router.post("/signin", (req, res) => {
         const refresh = jwt.sign({ id: user._id }, secretRefresh, {
           expiresIn: "30d",
         });
-        jwt.sign(payload, secret, { expiresIn: 60 }, (err, token) => {
+        jwt.sign(payload, secret, { expiresIn: 3600 }, (err, token) => {
           if (err) {
             res.status(500).json({ error: "Error signing token", raw: err });
           }

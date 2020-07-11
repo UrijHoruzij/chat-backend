@@ -25,61 +25,24 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", require("./controllers/auth"));
+
 app.use(
   "/user",
   passport.authenticate("jwt", { session: false }),
   require("./controllers/user")
 );
 
-// app.get("/user/me", (req, res) => {});
-// app.post("/user/signin", (req, res) => {});
-// app.post("/user/signup");
-// app.get("/user/find", (req, res) => {});
-// app.get("/user/:id", (req, res) => {});
-// app.delete("/user/:id", (req, res) => {});
+app.use(
+  "/dialogs",
+  passport.authenticate("jwt", { session: false }),
+  require("./controllers/dialogs")
+);
 
-app.get("/dialogs", (req, res) => {});
-app.post("/dialogs", (req, res) => {});
-app.delete("/dialogs/:id", (req, res) => {});
-
-app.get("/messages", (req, res) => {});
-app.post("/messages", (req, res) => {});
-app.delete("/messages", (req, res) => {});
-
-//add room
-app.post("/dialog", (req, res) => {
-  if (req.body) {
-    const { userId1, userId2 } = req.body;
-    let flagFind = false;
-    do {
-      let roomId = uuidv4();
-      Room.find({ roomId: roomId }, (err, docs) => {
-        if (err) {
-          const room = new Room({
-            roomId: roomId,
-            users: [userId1, userId2],
-            messages: [],
-          });
-          room.save();
-          console.log("Комната добавлена", roomId);
-          flagFind = false;
-        } else {
-          flagFind = true;
-        }
-      });
-    } while (flagFind);
-  } else {
-    res.status(500);
-  }
-});
-//joined room
-app.post("/joinedroom", (req, res) => {
-  if (req.body) {
-    const { userId, roomId } = req.body;
-  } else {
-    res.status(500);
-  }
-});
+app.use(
+  "/messages",
+  passport.authenticate("jwt", { session: false }),
+  require("./controllers/messages")
+);
 
 io.on("connection", (socket) => {
   console.log(`a user connected ${socket.id}`);

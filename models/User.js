@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  dialogs: {
-    type: Array,
-  },
   email: {
     type: String,
     unique: true,
@@ -30,6 +27,12 @@ const UserSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+  },
+  dialogs: {
+    type: Array,
+  },
+  avatar: {
+    type: String,
   },
 });
 

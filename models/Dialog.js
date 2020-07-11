@@ -1,14 +1,16 @@
 const mongoose = require("mongoose");
 
 const DialogSchema = new mongoose.Schema({
-  _id: mongoose.Types.ObjectId,
   name: {
     type: String,
-    required: true,
   },
   users: {
     type: Array,
     required: true,
   },
+  avatar: {
+    type: String,
+  },
 });
-module.exports = DialogSchema;
+
+module.exports = Dialog = mongoose.model("Dialog", DialogSchema);

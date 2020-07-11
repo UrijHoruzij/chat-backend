@@ -17,4 +17,8 @@ router.get("/me", (req, res) => {
   res.json(me);
 });
 
+router.get("/find", (req, res) => {});
+router.get("/:id", (req, res) => {});
+router.delete("/:id", (req, res) => {});
+
 module.exports = router;

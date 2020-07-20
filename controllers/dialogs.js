@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const Dialog = require("../models/Dialog");
 const User = require("../models/User");
+const Message = require("../models/Message");
 const jwt = require("jsonwebtoken");
+
 require("dotenv").config();
 const secret = process.env.SECRET;
 
@@ -48,8 +50,11 @@ router.post("/", (req, res) => {
                 if (err) {
                   return res
                     .status(500)
-                    .json({ error: "Error updated dialogs" });
+                    .json({ error: "Error updated user dialogs" });
                 }
+              });
+              io.emit("SERVER:DIALOG_CREATED", {
+                dialog,
               });
             });
           }
@@ -68,22 +73,23 @@ router.delete("/:id", (req, res) => {
     if (err) {
       return res.status(404).json({ error: "Dialog not found" });
     }
-  }).then((dialog) => {
-    for (user in dialog.users) {
-      if (decoded.id === dialog.users[user]) {
-        Dialog.deleteOne(dialog, (err) => {
-          if (err) {
-            return res.status(502).json({ error: "Dialog not deleted" });
-          }
-        }).then(() => {
-          res.status(200).json({ deleted: true });
-        });
-        ////разобраться
-        //удфление диалога у пользователей
+  })
+    .then((dialog) => {
+      for (user in dialog.users) {
+        if (decoded.id === dialog.users[user]) {
+          Dialog.deleteOne(dialog, (err) => {
+            if (err) {
+              return res.status(502).json({ error: "Dialog not deleted" });
+            }
+          });
+          Message.deleteMany({ dialogId: req.params.id });
+        }
       }
-    }
-    res.status(404).json({ error: "Dialog with the user not found" });
-  });
+      res.status(200).json({ deleted: true });
+    })
+    .catch(() => {
+      res.status(404).json({ error: "Dialog with the user not found" });
+    });
 });
 
 router.post("/join", (req, res) => {});

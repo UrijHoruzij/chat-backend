@@ -11,11 +11,18 @@ const MessageSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    required: true,
+    default: new Date(),
   },
   message: {
     type: String,
     required: true,
+  },
+  read: {
+    type: Boolean,
+    default: false,
+  },
+  attachments: {
+    type: String,
   },
 });
 

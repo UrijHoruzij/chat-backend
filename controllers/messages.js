@@ -21,12 +21,11 @@ router.get("/", (req, res) => {
             return res.status(404).json({ error: "Messages not found" });
           }
         }).then((messages) => {
-          return res.status(200).json(messages);
+          res.status(200).json(messages);
         });
         break;
       }
     }
-    return res.status(404).json({ error: "Dialog with the user not found" });
   });
 });
 
@@ -44,19 +43,18 @@ router.post("/", (req, res) => {
         const newMessage = new Message({
           authorId: decoded.id,
           dialogId: dialogId,
-          date: new Date(),
           message: message,
         });
         newMessage
           .save()
           .then((message) => {
+            io.emit("SERVER:NEW_MESSAGE", message);
             res.json(message);
           })
           .catch((err) => res.status(400).json(err));
         break;
       }
     }
-    return res.status(404).json({ error: "Dialog with the user not found" });
   });
 });
 
@@ -72,9 +70,8 @@ router.delete("/:id", (req, res) => {
         if (err) {
           return res.status(502).json({ error: "Message not deleted" });
         }
-      }).then(() => {
-        return res.status(200).json({ deleted: true });
       });
+      res.status(200).json({ deleted: true });
     }
   });
 });

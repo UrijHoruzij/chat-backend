@@ -17,8 +17,12 @@ router.get("/me", (req, res) => {
   res.json(me);
 });
 
-router.get("/find", (req, res) => {});
+router.get("/find", (req, res) => {
+  const id = req.body.id;
+});
 router.get("/:id", (req, res) => {});
-router.delete("/:id", (req, res) => {});
+router.delete("/:id", (req, res) => {
+  const decoded = jwt.verify(req.body.token, secret);
+});
 
 module.exports = router;

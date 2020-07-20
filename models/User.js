@@ -34,6 +34,13 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String,
   },
+  online: {
+    type: Boolean,
+  },
+  last_seen: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 module.exports = User = mongoose.model("User", UserSchema);

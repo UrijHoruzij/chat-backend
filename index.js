@@ -3,7 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const http = require("http").createServer(app);
-const io = require("socket.io")(http);
+require("./utils/socket")(http);
 const passport = require("passport");
 const db = require("./db");
 var fingerprint = require("express-fingerprint");
@@ -12,7 +12,7 @@ require("dotenv").config();
 db.connect();
 
 app.use(passport.initialize());
-require("./passport-config")(passport);
+require("./utils/passport-config")(passport);
 
 app.use(cors());
 app.use(fingerprint());
@@ -43,20 +43,6 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   require("./controllers/messages")
 );
-
-io.on("connection", (socket) => {
-  console.log(`a user connected ${socket.id}`);
-
-  socket.on("joined", () => {});
-
-  socket.on("message", (msg) => {
-    console.log(msg);
-  });
-
-  socket.on("disconnect", () => {
-    console.log(`user disconnected ${socket.id}`);
-  });
-});
 
 http.listen(process.env.PORT, () => {
   console.log(`Server run: ${process.env.PORT}`);

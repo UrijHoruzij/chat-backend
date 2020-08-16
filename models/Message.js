@@ -1,28 +1,37 @@
 const mongoose = require("mongoose");
-
+const Schema = mongoose.Schema;
 const MessageSchema = new mongoose.Schema({
-  authorId: {
+  text: {
     type: String,
-    required: true,
+    require: Boolean,
   },
-  dialogId: {
-    type: String,
-    required: true,
+  dialog: {
+    type: Schema.Types.ObjectId,
+    ref: "Dialog",
+    require: true,
   },
-  date: {
-    type: Date,
-    default: new Date(),
-  },
-  message: {
-    type: String,
-    required: true,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    require: true,
   },
   read: {
     type: Boolean,
     default: false,
   },
-  attachments: {
+  audio: {
+    type: Schema.Types.ObjectId,
+    ref: "UploadFile",
+  },
+  attachments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "UploadFile",
+    },
+  ],
+  date: {
     type: String,
+    require: true,
   },
 });
 

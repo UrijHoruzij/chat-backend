@@ -1,15 +1,17 @@
 const mongoose = require("mongoose");
-
+const Schema = mongoose.Schema;
 const DialogSchema = new mongoose.Schema({
-  name: {
-    type: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
-  users: {
-    type: Array,
-    required: true,
+  partner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
-  avatar: {
-    type: String,
+  lastMessage: {
+    type: Schema.Types.ObjectId,
+    ref: "Message",
   },
 });
 

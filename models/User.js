@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-
-const UserSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const differenceInMinutes = "date-fns/difference_in_minutes";
+const UserSchema = new Schema({
   email: {
     type: String,
     unique: true,
@@ -10,23 +11,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  refreshToken: {
-    token: {
-      type: String,
-    },
-    fingerprint: {
-      type: Object,
-    },
-  },
   fullname: {
-    name: {
-      type: String,
-      required: true,
-    },
-    surname: {
-      type: String,
-      required: true,
-    },
+    type: String,
+    required: true,
   },
   dialogs: {
     type: Array,
@@ -34,12 +21,15 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String,
   },
-  online: {
-    type: Boolean,
+  socket: {
+    type: String,
   },
-  last_seen: {
-    type: Date,
-    default: new Date(),
+  lastSeen: {
+    type: String,
+  },
+  isOnline: {
+    type: Boolean,
+    default: false,
   },
 });
 

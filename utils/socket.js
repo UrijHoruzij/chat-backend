@@ -11,6 +11,9 @@ const Socket = (http) => {
       socket.dialogId = dialogId;
       socket.join(dialogId);
     });
+    socket.on("SERVER:USER_AVATAR_UPDATE", () => {
+      socket.to(socket.dialogId).emit("SERVER:USER_AVATAR_UPDATE");
+    });
     socket.on("DIALOGS:TYPING", (obj) => {
       socket.broadcast.to(obj.dialogId).emit("DIALOGS:TYPING", obj);
     });

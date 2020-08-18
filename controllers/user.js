@@ -109,6 +109,25 @@ class user {
         });
     }
   }
+
+  setAvatar(req, res) {
+    const index = req.headers.authorization.indexOf(" ");
+    const decoded = jwt.verify(
+      req.headers.authorization.substring(index + 1),
+      secret
+    );
+    const avatar = req.body.avatar;
+    User.findById(decoded.id, (err, user) => {
+      if (err || !user) {
+        return res.status(404).json({
+          message: "Пользователь не найден",
+        });
+      }
+      user.avatar = avatar;
+      user.save();
+      res.json({ message: `Аватар изменен` });
+    });
+  }
 }
 
 module.exports = user;

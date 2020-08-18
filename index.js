@@ -71,6 +71,13 @@ app.delete(
     user.delete(req, res);
   }
 );
+app.post(
+  "/user/avatar",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    user.setAvatar(req, res);
+  }
+);
 
 const dialogsClass = require("./controllers/dialogs");
 const dialogs = new dialogsClass(io);
